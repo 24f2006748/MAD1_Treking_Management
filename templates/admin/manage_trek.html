@@ -34,6 +34,41 @@
     <a href="{{ url_for('add_trek') }}" class="add-trek-btn">+ Click here to add a new Trek</a>
 </div>
 
+<!-- ================= SEARCH & FILTER ================= -->
+
+<form method="GET" class="filter-bar">
+    <input type="text" name="search" placeholder="Search by Trek ID or Name..." value="{{ search }}">
+
+    <select name="difficulty">
+        <option value="">All Difficulties</option>
+        <option value="Easy" {% if difficulty == 'Easy' %}selected{% endif %}>Easy</option>
+        <option value="Moderate" {% if difficulty == 'Moderate' %}selected{% endif %}>Moderate</option>
+        <option value="Hard" {% if difficulty == 'Hard' %}selected{% endif %}>Hard</option>
+    </select>
+
+    <select name="status">
+        <option value="">All Statuses</option>
+        <option value="Open" {% if status == 'Open' %}selected{% endif %}>Open</option>
+        <option value="Closed" {% if status == 'Closed' %}selected{% endif %}>Closed</option>
+        <option value="Completed" {% if status == 'Completed' %}selected{% endif %}>Completed</option>
+    </select>
+
+    <select name="staff">
+        <option value="">All Staff</option>
+        <option value="assigned" {% if staff == 'assigned' %}selected{% endif %}>Assigned</option>
+        <option value="not_assigned" {% if staff == 'not_assigned' %}selected{% endif %}>Not Assigned</option>
+    </select>
+
+    <select name="participants">
+        <option value="">No Sort</option>
+        <option value="high" {% if participants == 'high' %}selected{% endif %}>Most Participants</option>
+        <option value="low" {% if participants == 'low' %}selected{% endif %}>Fewest Participants</option>
+    </select>
+
+    <button type="submit" class="search-btn">Search</button>
+    <a href="{{ url_for('manage_trek') }}" class="reset-btn">Reset</a>
+</form>
+
 <!-- ================= TABLE SECTION ================= -->
 
  {% if treks %}
@@ -73,9 +108,8 @@
 
                 {% else %}
                     <span class="not-assigned">NA</span>
+                {% endif %}
             </td>
-
-{% endif %}
             
             <!-- action buttons -->
             <td>

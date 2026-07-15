@@ -244,9 +244,56 @@ def manage_trek():
     if session["role"] != "admin":
         return "Access Denied"
 
-    treks = Trek.query.all()
+    search = request.args.get("search", "").strip()
+    difficulty = request.args.get("difficulty", "")
+    status = request.args.get("status", "")
+    staff = request.args.get("staff", "")
+    participants = request.args.get("participants", "")
 
-    return render_template("admin/manage_trek.html", treks=treks)
+    treks = Trek.query
+
+    if search:
+        if search.isdigit():
+            treks = treks.filter(Trek.id == int(search))
+        else:
+            treks = treks.filter(
+                (Trek.trek_name.ilike(f"%{search}%")) |
+                (Trek.location.ilike(f"%{search}%"))
+            )
+
+    if difficulty:
+        treks = treks.filter_by(difficulty=difficulty)
+
+    if status:
+        treks = treks.filter_by(status=status)
+
+    if staff == "assigned":
+        treks = treks.filter(Trek.assigned_staff_id != None)
+    elif staff == "not_assigned":
+        treks = treks.filter(Trek.assigned_staff_id == None)
+
+    treks = treks.order_by(Trek.id).all()
+
+    for trek in treks:
+        trek.participant_count = Booking.query.filter(
+            Booking.trek_id == trek.id,
+            Booking.status != "Cancelled"
+        ).count()
+
+    if participants == "high":
+        treks.sort(key=lambda trek: trek.participant_count, reverse=True)
+    elif participants == "low":
+        treks.sort(key=lambda trek: trek.participant_count)
+
+    return render_template(
+        "admin/manage_trek.html",
+        treks=treks,
+        search=search,
+        difficulty=difficulty,
+        status=status,
+        staff=staff,
+        participants=participants,
+    )
 
 
 # =============== ADMIN : ADD/CREATE TREK ===============
