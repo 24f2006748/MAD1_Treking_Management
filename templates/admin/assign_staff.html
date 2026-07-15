@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Assign Staff</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+
+</head>
+<style>
+    #assign-staff{
+        color: white;
+        padding: 8px 13px; 
+        background-color: #0080ff;
+        border: 2px solid #0080ff;
+    }
+    #assign-staff:hover{
+        color: #0080ff;
+        background-color: white; 
+    }
+    #cancel{
+        color: white;
+        padding: 8px 13px;                  
+        background-color: rgb(255, 0, 51);
+        border: 2px solid rgb(255, 0, 51);
+    }
+    #cancel:hover{
+        color: rgb(255, 0, 51);
+        background-color: white;
+    }
+    form{
+        width: 350px;
+        margin: 100px auto;
+        padding: 25px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 0 10px gray;
+        text-align: center;
+    }
+
+</style>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+    <div class="logo">🏔️ TrailConnect</div>
+    <div>
+         <a href="{{ url_for('admin_dashboard') }}" class="nav-btn">Admin Dashboard</a> 
+         <a href="{{ url_for('logout') }}" class="nav-btn logout-btn">Logout</a>
+    </div>
+</nav>
+
+ <!-- ================= PAGE HEADING ================= -->
+
+<h1 class="page-title">Assign Staff to Trek</h1>
+<p class="page-subtitle">Assign, update, or remove the staff member responsible for this trek.</p>
+
+<!-- ================= MAIN CONTENT ================= -->
+
+    <form method="POST">
+
+        <h3><strong>Trek Name :</strong> {{ trek.trek_name }}</h3>
+
+        <h3><strong>Location :</strong> {{ trek.location }}</h3>
+
+        <h3>
+            <strong>Select Staff Member :</strong>
+
+            <select name="staff_id" required>
+
+                <option value="NA"
+                    {% if trek.assigned_staff_id is none %}selected{% endif %}>
+                    NA (No Staff Assigned)
+                </option>
+
+                {% for staff in staff_members %}
+
+                <option value="{{ staff.id }}"
+                    {% if trek.assigned_staff_id == staff.id %}selected{% endif %}>
+                    {{ staff.name }} ({{ staff.email }})
+                </option>
+
+                {% endfor %}
+
+            </select>
+        </h3>
+
+        <br>
+
+    <button id="assign-staff" type="submit">Assign Staff</button>
+    <a href="{{ url_for('manage_trek') }}"><button id="cancel" type="button">Cancel</button></a>
+
+    </form>
+
+</body>
+</html>

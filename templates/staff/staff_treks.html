@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"content="width=device-width, initial-scale=1.0">
+
+    <title>My Treks</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='search.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='staff.css') }}">
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+    <div class="logo">🏔️ TrailConnect</div>
+    <div>
+         <a href="{{ url_for('staff_dashboard') }}" class="nav-btn">Staff Dashboard</a> 
+         <a href="{{ url_for('logout') }}" class="nav-btn logout-btn">Logout</a>
+    </div>
+ </nav>
+
+<!-- ================= PAGE HEADING ================= -->
+
+<h1 class="page-title">My Assigned Treks</h1>
+<p class="page-subtitle">View and manage all trek details</p>
+
+<!-- ================= SEARCH & FILTER ================= -->
+
+<form method="GET" class="filter-bar">
+
+<!-- Search Trek -->
+    <input
+        type="text"
+        name="search"
+        placeholder="🔍 Search Trek Name..."
+        value="{{ request.args.get('search','') }}">
+
+<!-- Status Filter -->
+    <select name="status">
+
+        <option value="">All Status</option>
+
+        <option value="Open"
+            {% if request.args.get('status')=="Open" %}selected{% endif %}>
+            Open
+        </option>
+
+        <option value="Closed"
+            {% if request.args.get('status')=="Closed" %}selected{% endif %}>
+            Closed
+        </option>
+
+        <option value="Completed"
+            {% if request.args.get('status')=="Completed" %}selected{% endif %}>
+            Completed
+        </option>
+
+    </select>
+
+<!-- Participant Sorting -->
+    <select name="participants">
+
+        <option value="">Participants</option>
+
+        <option value="high"
+            {% if request.args.get('participants')=="high" %}selected{% endif %}>
+            High → Low
+        </option>
+
+        <option value="low"
+            {% if request.args.get('participants')=="low" %}selected{% endif %}>
+            Low → High
+        </option>
+
+    </select>
+
+    <button type="submit" class="search-btn">Search</button>
+    <a href="{{ url_for('staff_treks') }}" class="reset-btn">Reset</a>
+
+</form>
+
+<!-- ================= TABLE ================= -->
+
+{% if treks %}
+
+<div class="table-container">
+<table>
+
+    <tr>
+        <th>Trek ID</th>
+        <th>Trek Name</th>
+        <th>Available Slots</th>
+        <th>Participants</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+
+    {% for trek in treks %}
+
+    <tr>
+
+        <td>T{{ "%03d"|format(trek.id) }}</td>
+        <td>{{ trek.trek_name }}</td>
+        <td>{{ trek.available_slots }}</td>
+        <td>{{ trek.participant_count }}</td>
+
+        <td>
+            {% if trek.status == "Open" %}
+                <span class="open">Open</span>
+
+            {% elif trek.status == "Closed" %}
+                <span class="closed">Closed</span>
+
+            {% else %}
+                <span class="completed">Completed</span>
+
+            {% endif %}
+        </td>
+
+        <td>
+            <a href="{{ url_for('staff_manage_trek', trek_id=trek.id) }}" class="manage-btn">Manage</a>
+        </td>
+
+    </tr>
+
+    {% endfor %}
+
+</table>
+</div>
+
+<!-- if no treks assigned -->
+
+{% else %}
+
+<div class="empty-card">
+    <h2>🏔</h2>
+    <p>No treks have been assigned to you yet.</p>
+</div>
+
+{% endif %}
+
+</body>
+
+</html>

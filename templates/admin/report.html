@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Reports</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='report.css') }}">
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+    <div class="logo">🏔️ TrailConnect</div>
+
+    <div>
+        <a href="{{ url_for('admin_dashboard') }}" class="nav-btn">Admin Dashboard</a>
+        <a href="{{ url_for('logout') }}" class="nav-btn logout-btn">Logout</a>
+    </div>
+</nav>
+
+<!-- ================= PAGE HEADING ================= -->
+
+<h1 class="page-title">Reports</h1>
+<p class="page-subtitle">View system analytics, booking insights and trek statistics.</p>
+
+<!-- ================= ROW 1 ================= -->
+
+<div class="report-row">
+
+<!-- Booking Statistics -->
+
+    <div class="report-card">
+
+            <div class="report-icon">📅</div>
+
+            <h3>Booking Statistics</h3>
+
+            <div class="report-item">
+                <span>Booked</span>
+                <strong>{{ booked_count }}</strong>
+            </div>
+
+            <div class="report-item">
+                <span>Cancelled</span>
+                <strong>{{ cancelled_count }}</strong>
+            </div>
+
+    </div>
+
+
+
+<!-- Staff Statistics -->
+
+    <div class="report-card">
+
+        <div class="report-icon">👨‍💼</div>
+
+        <h3>Staff Statistics</h3>
+
+        <div class="report-item">
+            <span>Approved</span>
+            <strong>{{ approved_staff }}</strong>
+        </div>
+
+        <div class="report-item">
+            <span>Pending</span>
+            <strong>{{ pending_staff }}</strong>
+        </div>
+
+        <div class="report-item">
+            <span>Blacklisted</span>
+            <strong>{{ blacklisted_staff }}</strong>
+        </div>
+
+    </div>
+
+
+
+<!-- User Statistics -->
+
+    <div class="report-card">
+
+        <div class="report-icon">👥</div>
+
+        <h3>User Statistics</h3>
+
+        <div class="report-item">
+            <span>Approved</span>
+            <strong>{{ approved_users }}</strong>
+        </div>
+
+        <div class="report-item">
+            <span>Blacklisted</span>
+            <strong>{{ blacklisted_users }}</strong>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= ROW 2 ================= -->
+
+<div class="report-row center-row">
+
+<!-- Trek Statistics -->
+
+    <div class="report-card">
+
+        <div class="report-icon">🏔</div>
+
+        <h3>Trek Statistics</h3>
+
+        <div class="report-item">
+            <span>Open</span>
+            <strong>{{ open_treks }}</strong>
+        </div>
+
+        <div class="report-item">
+            <span>Closed</span>
+            <strong>{{ closed_treks }}</strong>
+        </div>
+
+        <div class="report-item">
+            <span>Completed</span>
+            <strong>{{ completed_treks }}</strong>
+        </div>
+
+    </div>
+
+
+
+<!-- Difficulty Statistics -->
+
+    <div class="report-card">
+
+        <div class="report-icon">🥾</div>
+
+        <h3>Difficulty</h3>
+
+        <div class="report-item">
+            <span>Easy</span>
+            <strong>{{ easy_count }}</strong>
+        </div>
+
+        <div class="report-item">
+            <span>Moderate</span>
+            <strong>{{ moderate_count }}</strong>
+        </div>
+
+        <div class="report-item">
+            <span>Hard</span>
+            <strong>{{ hard_count }}</strong>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= ROW 3 ================= -->
+
+<div class="report-row">
+
+<!-- Most Popular Trek -->
+
+    <div class="highlight-card">
+
+        <div class="report-icon">🏆</div>
+
+        <h3>Most Popular Trek</h3>
+
+        <h2>{{ most_popular.trek_name }}</h2>
+
+        <p>
+            Participants :
+            <strong>{{ most_popular.participant_count }}</strong>
+        </p>
+
+        <p>
+            Difficulty :
+            {{ most_popular.difficulty }}
+        </p>
+
+        <p>
+            Status :
+            {{ most_popular.status }}
+        </p>
+
+    </div>
+
+
+
+<!-- Least Popular Trek -->
+
+    <div class="highlight-card">
+
+        <div class="report-icon">📉</div>
+
+        <h3>Least Popular Trek</h3>
+
+        <h2>{{ least_popular.trek_name }}</h2>
+
+        <p>
+            Participants :
+            <strong>{{ least_popular.participant_count }}</strong>
+        </p>
+
+        <p>
+            Difficulty :
+            {{ least_popular.difficulty }}
+        </p>
+
+        <p>
+            Status :
+            {{ least_popular.status }}
+        </p>
+
+    </div>
+
+</div>
+
+</body>
+</html>

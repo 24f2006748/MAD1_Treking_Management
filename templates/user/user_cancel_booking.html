@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cancel Booking</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='user.css') }}">
+
+</head>
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+    <div class="logo">🏔️ TrailConnect</div>
+    <div>
+         <a href="{{ url_for('user_dashboard') }}" class="nav-btn">User Dashboard</a> 
+         <a href="{{ url_for('logout') }}" class="nav-btn logout-btn">Logout</a>
+    </div>
+ </nav>
+
+<!-- ================= PAGE TITLE ================= -->
+
+<h1 class="page-title">Cancel Trek Booking</h1>
+<p class="page-subtitle">Please review the cancellation policy before confirming.</p>
+
+<!-- ================= BOOKING SUMMARY ================= -->
+
+<form method="POST">
+
+<div class="booking-summary-card">
+
+    <h2>Booking Summary</h2>
+
+    <div class="summary-grid">
+
+        <div class="summary-item">
+            <label>Trek Name</label>
+            <p>{{ trek.trek_name }}</p>
+        </div>
+
+        <div class="summary-item">
+            <label>Location</label>
+            <p>{{ trek.location }}</p>
+        </div>
+
+        <div class="summary-item">
+            <label>Trek Dates</label>
+            <p>
+                {{ trek.start_date.strftime("%d %b %Y") }}
+                -
+                {{ trek.end_date.strftime("%d %b %Y") }}
+            </p>
+        </div>
+
+        <div class="summary-item">
+            <label>Booked On</label>
+            <p>{{ booking.booking_date.strftime("%d %b %Y") }}</p>
+        </div>
+
+        <div class="summary-item">
+            <label>Guide</label>
+
+            {% if trek.assigned_staff %}
+                <p>{{ trek.assigned_staff.name }}</p>
+
+            {% else %}
+                <p>Not Assigned Yet</p>
+
+            {% endif %}
+
+        </div>
+
+        <div class="summary-item">
+            <label>Status</label>
+
+            <p class="booked-status">
+                🟢 {{ booking.status }}
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= CANCELLATION POLICY ================= -->
+
+<div class="guideline-card">
+
+    <h2>Cancellation Policy</h2>
+
+    <ul>
+        <li>Cancellation is allowed only before the trek start date.</li>
+        <li>Your booking status will change to <strong>Cancelled</strong>.</li>
+        <li>Your reserved slot will become available for another participant.</li>
+        <li>This action cannot be undone.</li>
+        <li>No refund will be provided after the cancellation deadline.</li>
+    </ul>
+
+</div>
+
+<!-- ================= CONFIRMATION ================= -->
+
+<div class="terms-card">
+
+    <h2>Confirmation</h2>
+
+    <div class="agree-box">
+        <input type="checkbox" id="agree" required>
+        <label for="agree">I understand that this booking will be cancelled and this action cannot be undone.</label>
+    </div>
+
+    <div class="booking-buttons">
+
+        <a href="{{ url_for('user_my_bookings') }}">
+            <button type="button"> ← Back </button>
+        </a>
+
+        <button type="submit">Confirm Cancellation</button>
+
+    </div>
+
+</div>
+
+</form>
+
+<!-- js  -->
+{% if alert_message %}
+
+<script>
+    alert("{{ alert_message }}");
+</script>
+
+{% endif %}
+
+</body>
+</html>

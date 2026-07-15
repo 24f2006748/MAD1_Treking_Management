@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Add Trek</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+    <div class="logo">🏔️ TrailConnect</div>
+    <div>
+         <a href="{{ url_for('admin_dashboard') }}" class="nav-btn">Admin Dashboard</a> 
+         <a href="{{ url_for('logout') }}" class="nav-btn logout-btn">Logout</a>
+    </div>
+</nav>
+
+<!-- ================== PAGE HEADINF ================== -->
+ 
+<h1 class="page-title">ADD TREK</h1>
+<p class="page-subtitle">Add a new trek by filling in the information below.</p>
+
+<!-- ================= FORM TO ADD TREK ================= -->
+
+<form method="POST" class="form-card">
+
+    <div class="form-grid">
+
+        <div class="form-group">
+            <label>Trek Name</label>
+            <input type="text" name="trek_name" required>
+        </div>
+
+        <div class="form-group">
+            <label>Location</label>
+            <input type="text" name="location" required>
+        </div>
+
+        <div class="form-group">
+            <label>Difficulty</label>
+            <select name="difficulty" required>
+                <option value="Easy">Easy</option>
+                <option value="Moderate">Moderate</option>
+                <option value="Hard">Hard</option>
+            </select>
+
+        </div>
+
+        <div class="form-group">
+            <label>Duration (Days)</label>
+            <input type="number" name="duration" min="1" required>
+        </div>
+
+        <div class="form-group">
+            <label>Available Slots</label>
+            <input type="number" name="available_slots" min="1" required>
+        </div>
+
+        <div class="form-group">
+            <label>Status</label>
+            <select name="status" required>
+                <option value="Open">Open</option>
+                <option value="Closed">Closed</option>
+                <option value="Completed">Completed</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Start Date</label>
+            <input type="date" id="start_date" name="start_date" min="{{ today }}" required>
+        </div>
+
+        <div class="form-group">
+            <label>End Date</label>
+            <input type="date" id="end_date" name="end_date" required>
+        </div>
+
+        <div class="form-group full-width">
+            <label>Description</label>
+            <textarea name="description" placeholder="Write a short description about the trek..."></textarea>
+        </div>
+
+    </div>
+
+    <div class="form-buttons">
+        <a href="{{ url_for('manage_trek') }}" class="cancel-btn"> Cancel </a>
+        <button type="submit" class="save-btn"> Add Trek </button>
+    </div>
+
+</form>
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script>
+const startDate = document.getElementById("start_date");
+const endDate = document.getElementById("end_date");
+
+startDate.addEventListener("change", function () {
+    endDate.min = this.value;
+    if (endDate.value && endDate.value < this.value) {
+        endDate.value = "";
+    }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,139 @@
+body{
+    margin:0;
+    padding-top:60px;
+    background:#f7faff;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+.page-title{
+    text-align:center;
+    font-size:38px;
+    color:#2c3e50;
+    margin-top:35px;
+    margin-bottom:5px;
+    font-weight:bold;
+    letter-spacing:1px;
+}
+
+.page-subtitle{
+    text-align:center;
+    color:#666;
+    font-size:17px;
+    margin-bottom:30px;
+}
+
+/* ==== SUMMARY CARS ====*/
+
+.summary-cards{
+    display:flex;
+    justify-content:center;
+    gap:30px;
+    margin:40px auto 60px;
+}
+
+.summary-card{
+    width:210px;
+    background:white;
+    padding:25px;
+    text-align:center;
+    border-radius:14px;
+    box-shadow:0 5px 15px rgba(0,0,0,.12);
+    transition:0.3s;
+}
+
+.summary-card:hover{
+    transform:scale(1.1);
+    box-shadow:0 10px 22px rgba(0,0,0,.18);
+}
+
+.summary-icon{
+    font-size:42px;
+    margin-bottom:12px;
+}
+
+.summary-card h2{
+    margin:0;
+    font-size:34px;
+    color:#2c3e50;
+}
+
+.summary-card p{
+    margin-top:10px;
+    color:#666;
+    font-size:16px;
+    font-weight:bold;
+}
+
+
+/* ==== SECTION HEADING ====*/
+
+.section-heading{
+    text-align:center;
+    margin:10px 0 35px;
+    color:#2c3e50;
+    font-size:32px;
+}
+
+/* ==== QUICK ACTIONS ====*/
+
+.quick-actions{
+    width:1120px;
+    margin:0 auto 60px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:30px;
+}
+
+/* ==== ACTION CARDS ====*/
+
+.action-card{
+    background:white;
+    border-radius:14px;
+    padding:30px;
+    text-align:center;
+    border-top:5px solid transparent;
+    box-shadow:0 5px 15px rgba(0,0,0,.12);
+    transition:0.3s;
+}
+
+.action-card:hover{
+    transform:translateY(-8px);
+    border-top:5px solid #2c3e50;
+    box-shadow:0 10px 22px rgba(0,0,0,.18);
+}
+
+.action-icon{
+    font-size:52px;
+    margin-bottom:18px;
+}
+
+.action-card h3{
+    margin:0 0 15px;
+    color:#2c3e50;
+    font-size:24px;
+}
+
+.action-card p{
+    color:#666;
+    line-height:1.6;
+    font-size:15px;
+    margin:0 0 22px;
+}
+
+/* ==== ACTION BUTTON ====*/
+
+.action-btn{
+    display:inline-block;
+    padding:10px 26px;
+    background:#2c3e50;
+    color:white;
+    text-decoration:none;
+    border-radius:8px;
+    font-weight:bold;
+    transition:0.3s;
+}
+
+.action-btn:hover{
+    background:#1d2f41;
+    transform:scale(1.05);
+}

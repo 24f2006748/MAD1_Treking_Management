@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>User Management</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+</head>
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+    <div class="logo">🏔️ TrailConnect</div>
+
+    <div>
+        <a href="{{ url_for('admin_dashboard') }}" class="nav-btn">Admin Dashboard</a>
+        <a href="{{ url_for('logout') }}" class="nav-btn logout-btn">Logout</a>
+    </div>
+</nav>
+
+<!-- ================= PAGE HEADING ================= -->
+
+<h1 class="page-title">User Management</h1>
+<p class="page-subtitle">View all registered users and monitor the members of the Trek Management System.</p>
+
+<!-- ================= SEARCH & FILTER ================= -->
+
+<form method="GET" class="filter-bar">
+
+<!-- Search -->
+    <input
+        type="text"
+        name="search"
+        placeholder="Search by User ID or Name..."
+        value="{{ request.args.get('search','') }}">
+
+<!-- Status -->
+    <select name="status">
+
+        <option value="All">All Users</option>
+
+        <option value="Approved"
+        {% if request.args.get('status')=="Approved" %}selected{% endif %}>
+            Active Users
+        </option>
+
+        <option value="Blacklisted"
+        {% if request.args.get('status')=="Blacklisted" %}selected{% endif %}>
+            Blacklisted Users
+        </option>
+
+    </select>
+
+    <button type="submit" class="search-btn">Search</button>
+    <a href="{{ url_for('manage_users') }}" class="reset-btn">Reset</a>
+
+</form>
+
+<!-- ================= TABLE ================= -->
+
+{% if users %}
+
+<div class="table-container">
+
+<table>
+
+    <tr>
+        <th>User ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+
+{% for user in users %}
+
+    <tr>
+        <td>U{{ "%03d"|format(user.id) }}</td>
+        <td>{{ user.name }}</td>
+        <td>{{ user.email }}</td>
+
+        <td>
+            {% if user.status=="Approved" %}
+                <span class="approved-badge">Approved</span>
+
+            {% else %}
+                <span class="blacklisted-badge">Blacklisted</span>
+
+            {% endif %}
+        </td>
+
+        <td>
+            {% if user.status=="Approved" %}
+                <form  action="{{ url_for('blacklist_user', user_id=user.id) }}" method="POST">
+                <button class="blacklist-btn" type="submit">Blacklist</button>
+                </form>
+
+            {% else %}
+                <span class="blacklisted-action">Blacklisted</span>
+
+            {% endif %}
+        </td>
+
+    </tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+{% else %}
+
+    <div class="empty-card">
+
+        <div class="empty-icon">👥</div>
+            <h2>No Users Found</h2>
+            <p>No users matched your search or filter.</p>
+
+        </div>
+
+{% endif %}
+
+</body>
+</html>

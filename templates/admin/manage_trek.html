@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Trek Management</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+ 
+<nav class="navbar">
+    <div class="logo">🏔️ TrailConnect</div>
+    <div>
+         <a href="{{ url_for('admin_dashboard') }}" class="nav-btn">Admin Dashboard</a> 
+         <a href="{{ url_for('logout') }}" class="nav-btn logout-btn">Logout</a>
+    </div>
+</nav>
+
+<!-- ================== PAGE HEADINF ================== -->
+
+<h1 class="page-title">Manage Treks</h1>
+<p class="page-subtitle">Manage all treks, update their information, assign staff, or remove treks from the system.</p>
+
+<!-- ================= ADD TREK SECTION ================= -->
+
+<div class="add-trek-container">
+    <a href="{{ url_for('add_trek') }}" class="add-trek-btn">+ Click here to add a new Trek</a>
+</div>
+
+<!-- ================= TABLE SECTION ================= -->
+
+ {% if treks %}
+
+    <table class="table-container" border="1" cellpadding="10">
+        <tr>
+            <th>ID</th>
+            <th>Trek Name</th>
+            <th>Available Slots</th>
+            <th>Status</th>
+            <th>Assigned Staff</th>
+            <th>Action</th>
+        </tr>
+
+        {% for trek in treks %}
+        <tr>
+            <td>T{{ "%03d"|format(trek.id) }}</td>
+            <td>{{ trek.trek_name }}</td>
+            <td>{{ trek.available_slots }}</td>
+            <td>
+                {% if trek.status == "Open" %}
+                    <span class="open">Open</span>
+                {% elif trek.status == "Closed" %}
+                    <span class="closed">Closed</span>
+                {% elif trek.status == "Completed" %}
+                    <span class="completed">Completed</span>
+                {% endif %}
+            </td>
+            
+            <td>
+                {% if trek.assigned_staff %}
+                    {% if trek.assigned_staff.status == "Blacklisted" %}
+                        <span class="blacklisted-assigned">Blacklisted: {{ trek.assigned_staff.name }}</span>
+                    {% else %}
+                        <span>{{ trek.assigned_staff.name }}</span>
+                    {% endif %}
+
+                {% else %}
+                    <span class="not-assigned">NA</span>
+            </td>
+
+{% endif %}
+            
+            <!-- action buttons -->
+            <td>
+                <div style=" justify-content:center;  ">
+                    <!-- edit -->
+                    <a class="edit-btn" href="{{ url_for('edit_trek', trek_id=trek.id) }}">Edit</a>
+
+                    <!-- delete -->
+                    {% if trek.status != "Completed" %}
+                        <a href="{{ url_for('delete_trek', trek_id=trek.id) }}" class="delete-btn">Delete</a>
+                    {% else %}
+                        <span class="disabled-btn">Completed</span>
+                    {% endif %}
+                    
+                    <!-- assign staff -->
+                    {% if trek.status != "Completed" %}
+                        <a class="assign-btn" href="{{ url_for('assign_staff', trek_id=trek.id) }}">Assign Staff</a>
+                    {% else %}
+                        <span class="disabled-btn">Assignment Locked</span>
+                    {% endif %}
+
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+{% else %}
+
+<div class="empty-card">
+
+    <div class="empty-icon">🏕️</div>
+    <h2>No Treks Available</h2>
+    <p>
+        No treks have been created yet.
+        Click <strong>Add New Trek</strong> to create your first trek.
+    </p>
+
+</div>
+
+{% endif %}
+
+</body>
+</html>

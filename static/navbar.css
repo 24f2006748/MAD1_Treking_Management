@@ -1,0 +1,50 @@
+/* ================= NAVBAR ================= */
+
+.navbar{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    background:#2c3e50;
+    color:white;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 40px;
+    box-sizing:border-box;
+    box-shadow:0 2px 8px rgba(0,0,0,0.2);
+    z-index:1000;
+}
+
+.logo{
+    font-size:24px;
+    font-weight:bold;
+}
+
+.nav-btn{
+    background:white;
+    color:#2c3e50;
+    text-decoration:none;
+    padding:10px 18px;
+    border-radius:6px;
+    font-weight:bold;
+    transition:0.2s;
+}
+
+.nav-btn:hover{
+    background:#dfe6e9;
+}
+
+.nav-links{
+    display:flex;
+    gap:15px;
+}
+
+.logout-btn{
+    background:#dc3545;
+    color:white;
+}
+
+.logout-btn:hover{
+    background:#bb2d3b;
+}

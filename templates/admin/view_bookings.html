@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>View Bookings</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<nav class="navbar">
+    <div class="logo">🏔️ TrailConnect</div>
+    <div>
+         <a href="{{ url_for('admin_dashboard') }}" class="nav-btn">Admin Dashboard</a> 
+         <a href="{{ url_for('logout') }}" class="nav-btn logout-btn">Logout</a>
+    </div>
+</nav>
+
+<!-- ================== PAGE HEADINF ================== -->
+
+<h1 class="page-title">Trek Bookings </h1>
+<p class="page-subtitle">View all trek bookings made by users </p>
+
+<!-- ================== SEARCH AND FILTER ================== -->
+
+<form method="GET" class="filter-bar">
+
+<!-- Search -->
+
+    <input
+    type="text"
+    name="search"
+    placeholder="🔍 Search User, Trek or Location..."
+    value="{{ request.args.get('search','') }}">
+
+<!-- Booking Status -->
+
+    <select name="status">
+
+        <option value="">All Status</option>
+
+        <option value="Booked"
+        {% if request.args.get('status')=="Booked" %}selected{% endif %}>
+        Booked
+        </option>
+
+        <option value="Cancelled"
+        {% if request.args.get('status')=="Cancelled" %}selected{% endif %}>
+        Cancelled
+        </option>
+
+    </select>
+
+    <button class="search-btn">Search</button>
+    <a href="{{ url_for('view_bookings') }}" class="reset-btn">Reset</a>
+
+</form>
+
+<!-- ================= Trek Booking Table ================= -->
+
+{% if bookings %}
+
+<table class="table-container" border="1" cellpadding="10">
+
+<tr>
+    <th>Booking ID</th>
+    <th>User</th>
+    <th>Email</th>
+    <th>Trek</th>
+    <th>Location</th>
+    <th>Booking Date</th>
+    <th>Status</th>
+</tr>
+
+
+{% for booking in bookings %}
+    <tr>
+        <td>{{ booking.id }}</td>
+        <td>{{ booking.user.name }}</td>
+        <td>{{ booking.user.email }}</td>
+        <td>{{ booking.trek.trek_name }}</td>
+        <td>{{ booking.trek.location }}</td>
+        <td>{{ booking.booking_date }}</td>
+        <td>{{ booking.status }}</td>
+    </tr>
+{% endfor %}
+
+</table>
+
+{% else %}
+
+<div class="empty-card">
+
+    <div class="empty-icon">🏔</div>
+    <h2>No Booking Found</h2>
+    <p>
+        <!-- There are currently no treks available in the system.
+        Add a new trek to get started. -->
+    </p>
+
+</div>
+
+{% endif %}
+
+
+</body>
+</html>

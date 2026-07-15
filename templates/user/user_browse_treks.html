@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Browse Treks</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='user.css') }}">
+
+
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+    <div class="logo">🏔️ TrailConnect</div>
+    <div>
+         <a href="{{ url_for('user_dashboard') }}" class="nav-btn">User Dashboard</a> 
+         <a href="{{ url_for('logout') }}" class="nav-btn logout-btn">Logout</a>
+    </div>
+ </nav>
+
+
+<!-- ================= PAGE TITLE ================= -->
+
+<h1 class="page-title">
+    Browse Treks
+</h1>
+
+<p class="page-subtitle">
+    Find your next adventure from our available trekking experiences.
+</p>
+
+<!-- ================= SEARCH & FILTER ================= -->
+
+<form method="GET" action="{{ url_for('user_browse_treks') }}">
+
+<div class="filter-container">
+
+    <input
+        type="text"
+        name="search"
+        placeholder="Search by Trek Name or Location..."
+        value="{{ search }}">
+
+<!-- loction filter -->
+    <select name="location">
+
+        <option value="">All Locations</option>
+
+        {% for location in locations %}
+
+        <option value="{{ location }}"
+            {% if selected_location == location %}selected{% endif %}>
+
+            {{ location }}
+
+        </option>
+
+        {% endfor %}
+
+    </select>
+
+<!-- Difficulty filter -->
+    <select name="difficulty">
+
+        <option value="">All Difficulties</option>
+
+        <option value="Easy"
+        {% if difficulty=="Easy" %}selected{% endif %}>
+        Easy
+        </option>
+
+        <option value="Moderate"
+        {% if difficulty=="Moderate" %}selected{% endif %}>
+        Moderate
+        </option>
+
+        <option value="Hard"
+        {% if difficulty=="Hard" %}selected{% endif %}>
+        Hard
+        </option>
+
+    </select>
+
+ <!-- Duration Filter -->
+    <select name="duration">
+
+        <option value="">All Durations</option>
+        <option value="2" {% if duration=="2" %}selected{% endif %}>2 Days</option>
+        <option value="3" {% if duration=="3" %}selected{% endif %}>3 Days</option>
+        <option value="4" {% if duration=="4" %}selected{% endif %}>4 Days</option>
+        <option value="5" {% if duration=="5" %}selected{% endif %}>5 Days</option>
+        <option value="6" {% if duration=="6" %}selected{% endif %}>6 Days</option>
+        <option value="7" {% if duration=="7" %}selected{% endif %}>7 Days</option>
+    </select>
+
+    <button type="submit">Search</button>
+
+    <a href="{{ url_for('user_browse_treks') }}">
+        <button type="button">Reset</button>
+    </a>
+
+</div>
+
+</form>
+
+<!-- ================= TABLE ================= -->
+
+{% if treks %}
+
+<div class="table-container">
+
+<table>
+
+    <tr>
+        <th>Start Date</th>
+        <th>Trek Name</th>
+        <th>Location</th>
+        <th>Difficulty</th>
+        <th>Duration</th>
+        <th>Available Slots</th>
+        <th>Action</th>
+    </tr>
+
+    {% for trek in treks %}
+
+    <tr>
+
+        <td>{{ trek.start_date.strftime("%d %b %Y") }}</td>
+        <td>{{ trek.trek_name }}</td>
+        <td>{{ trek.location }}</td>
+        <td>{{ trek.difficulty }}</td>
+        <td>{{ trek.duration }} Days</td>
+        <td>{{ trek.available_slots }}</td>
+
+        <td>
+            <a href="{{ url_for('user_trek_booking_details', trek_id=trek.id) }}">
+                <button>View Details</button>
+            </a>
+        </td>
+
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+</div>
+<!-- if there no trek availble -->
+{% else %}
+
+<div class="empty-box">
+    <h2>🏔 No Treks Available</h2>
+</div>
+
+{% endif %}
+
+<!-- js pop msg -->
+
+{% if alert_message %}
+
+<script>
+    alert("{{ alert_message }}");
+</script>
+
+{% endif %}
+
+</body>
+
+</html>

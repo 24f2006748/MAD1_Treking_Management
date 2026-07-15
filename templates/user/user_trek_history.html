@@ -1,0 +1,150 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trek History</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='navbar.css') }}">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='user.css') }}">
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+    <div class="logo">🏔️ TrailConnect</div>
+    <div>
+         <a href="{{ url_for('user_dashboard') }}" class="nav-btn">User Dashboard</a> 
+         <a href="{{ url_for('logout') }}" class="nav-btn logout-btn">Logout</a>
+    </div>
+ </nav>
+
+<!-- ================= PAGE TITLE ================= -->
+
+<h1 class="page-title">Trek History</h1>
+<p class="page-subtitle">View your completed and cancelled trekking records.</p>
+
+<!-- ================= FILTER ================= -->
+
+<div class="filter-container">
+
+    <form method="GET">
+
+        <select name="status">
+
+            <option value="">All</option>
+
+            <option value="Completed"
+            {% if selected_status=="Completed" %}selected{% endif %}>
+                Completed
+            </option>
+
+            <option value="Cancelled"
+            {% if selected_status=="Cancelled" %}selected{% endif %}>
+                Cancelled
+            </option>
+
+        </select>
+
+        <button type="submit">Filter</button>
+        
+    </form>
+
+</div>
+
+<!-- ================= HISTORY ================= -->
+
+{% if bookings %}
+
+<div class="booking-container">
+
+{% for booking in bookings %}
+
+<div class="booking-card">
+
+    <h2>{{ booking.trek.trek_name }}</h2>
+
+    <div class="booking-grid">
+
+        <div>
+            <label>Location</label>
+            <p>{{ booking.trek.location }}</p>
+        </div>
+
+        <div>
+            <label>Difficulty</label>
+            <p>{{ booking.trek.difficulty }}</p>
+        </div>
+
+        <div>
+            <label>Duration</label>
+            <p>{{ booking.trek.duration }} Days</p>
+        </div>
+
+        <div>
+            <label>Trek Dates</label>
+            <p>
+                {{ booking.trek.start_date.strftime("%d %b %Y") }}
+                -
+                {{ booking.trek.end_date.strftime("%d %b %Y") }}
+            </p>
+        </div>
+
+        <div>
+            <label>Guide</label>
+            <p>
+                {% if booking.trek.assigned_staff %}
+                    {{ booking.trek.assigned_staff.name }}
+
+                {% else %}
+                    Not Assigned Yet
+
+                {% endif %}
+            </p>
+        </div>
+
+        <div>
+            <label>Booking Date</label>
+            <p>{{ booking.booking_date.strftime("%d %b %Y") }}</p>
+        </div>
+
+    </div>
+
+    <hr>
+
+    <div class="booking-status">
+        <!-- <strong>Status :</strong> -->
+            {% if booking.status == "Cancelled" %}
+                <span class="status-cancelled">Cancelled</span>
+
+            {% elif booking.trek.status == "Completed" %}
+                <span class="status-completed">Completed</span>
+
+            {% endif %}
+    </div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% else %}
+
+<div class="no-bookings">
+    <h2> No Trek History Found</h2>
+    <p>You haven't completed or cancelled any treks yet.</p>
+</div>
+
+{% endif %}
+
+</body>
+
+</html>
+```

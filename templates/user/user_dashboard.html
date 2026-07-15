@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='user.css') }}">
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+    <div class="logo">🏔️ TrailConnect</div>
+    <div>
+         <a href="{{ url_for('user_dashboard') }}" class="nav-btn">User Dashboard</a> 
+         <a href="{{ url_for('logout') }}" class="nav-btn logout-btn">Logout</a>
+    </div>
+ </nav>
+
+ <!-- ================= PAGE TITLE ================= -->
+
+<h1 class="page-title"> Welcome, {{ user.name }} </h1>
+
+<!-- ================= QUOTE SECTION ================= -->
+ <div class="quote-box">
+
+    <h2>
+        "The mountains are calling,
+        and I must go."
+    </h2>
+
+    <p>
+        Discover breathtaking trails, plan your next adventure,
+        manage your bookings, and create unforgettable memories.
+    </p>
+
+</div>
+
+<!-- ================= 4 NAVIGATION CARDS ================= -->
+
+<div class="dashboard-grid">
+
+<!-- Browse Treks -->
+
+    <div class="dashboard-card">
+        
+        <div class="icon">🔍</div>
+        <h2>Browse Treks</h2>
+
+        <p>
+            Explore available treks and
+            book your next adventure.
+        </p>
+
+        <a href="{{ url_for('user_browse_treks') }}">
+            <button>View</button>
+        </a>
+
+    </div>
+
+<!-- My Bookings -->
+
+    <div class="dashboard-card">
+
+        <div class="icon">🎒</div>
+        <h2>My Bookings</h2>
+
+        <p>
+            View all your booked treks
+            and manage them.
+        </p>
+
+        <a href="{{ url_for('user_my_bookings') }}">
+            <button>View</button>
+        </a>
+
+    </div>
+
+<!-- Trek History -->
+
+    <div class="dashboard-card">
+
+        <div class="icon">📜</div>
+        <h2>Trek History</h2>
+
+        <p>
+            View completed and
+            cancelled treks.
+        </p>
+
+        <a href="{{ url_for('user_trek_history') }}">
+            <button>View</button>
+        </a>
+
+    </div>
+
+<!-- My Profile -->
+
+    <div class="dashboard-card">
+
+        <div class="icon">👤</div>
+        <h2>My Profile</h2>
+
+        <p>
+            View and update
+            your profile.
+        </p>
+
+        <a href="{{ url_for('user_profile') }}">
+            <button>View</button>
+        </a>
+
+    </div>
+
+</div>
+
+
+</body>
+
+</html>

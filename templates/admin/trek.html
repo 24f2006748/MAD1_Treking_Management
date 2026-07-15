@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Trek Overview</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='search.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+
+</head>
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<nav class="navbar">
+    <div class="logo">T🏔️ TrailConnect</div>
+    <div>
+         <a href="{{ url_for('admin_dashboard') }}" class="nav-btn">Admin Dashboard</a> 
+         <a href="{{ url_for('logout') }}" class="nav-btn logout-btn">Logout</a>
+    </div>
+</nav>
+
+<!-- ================== PAGE HEADINF ================== -->
+
+<h1 class="page-title">Trek Overview </h1>
+<p class="page-subtitle">View all treks, their current status and assigned staff</p>
+
+<!-- ================= SEARCH & FILTER ================= -->
+ 
+
+<form method="GET" class="filter-bar">
+
+<!-- Search -->
+    <input
+        type="text"
+        name="search"
+        placeholder="🔍 Search Trek Name or Location..."
+        value="{{ request.args.get('search','') }}">
+
+<!-- Difficulty -->
+    <select name="difficulty">
+
+        <option value="">All Difficulty</option>
+
+        <option value="Easy"
+        {% if request.args.get('difficulty')=="Easy" %}selected{% endif %}>
+        Easy
+        </option>
+
+        <option value="Moderate"
+        {% if request.args.get('difficulty')=="Moderate" %}selected{% endif %}>
+        Moderate
+        </option>
+
+        <option value="Difficult"
+        {% if request.args.get('difficulty')=="Difficult" %}selected{% endif %}>
+        Difficult
+        </option>
+
+    </select>
+
+<!-- Status -->
+
+    <select name="status">
+
+        <option value="">All Status</option>
+
+        <option value="Open"
+        {% if request.args.get('status')=="Open" %}selected{% endif %}>
+        Open
+        </option>
+
+        <option value="Closed"
+        {% if request.args.get('status')=="Closed" %}selected{% endif %}>
+        Closed
+        </option>
+
+        <option value="Completed"
+        {% if request.args.get('status')=="Completed" %}selected{% endif %}>
+        Completed
+        </option>
+
+    </select>
+
+<!-- Staff -->
+
+    <select name="staff">
+
+        <option value="">All Treks</option>
+
+        <option value="assigned"
+        {% if request.args.get('staff')=="assigned" %}selected{% endif %}>
+        Staff Assigned
+        </option>
+
+        <option value="not_assigned"
+        {% if request.args.get('staff')=="not_assigned" %}selected{% endif %}>
+        No Staff Assigned
+        </option>
+
+    </select>
+
+<!-- Participants -->
+
+    <select name="participants">
+
+        <option value="">Participants</option>
+
+        <option value="high"
+        {% if request.args.get('participants')=="high" %}selected{% endif %}>
+        High → Low
+        </option>
+
+        <option value="low"
+        {% if request.args.get('participants')=="low" %}selected{% endif %}>
+        Low → High
+        </option>
+
+    </select>
+
+    <button class="search-btn">Search</button>
+    <a href="{{ url_for('trek') }}" class="reset-btn">Reset</a>
+
+</form>
+
+
+
+<!-- ================= TREK OVERVIEW TABLE ================= -->
+
+{% if treks %}
+    <div class="table-container">
+
+        <table>
+
+            <tr>
+                <th>Trek ID</th>
+                <th>Trek Name</th>
+                <th>Location</th>
+                <th>Difficulty</th>
+                <th>Duration</th>
+                <th>Available Slots</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Status</th>
+                <th>Assigned Staff</th>
+                <th>Registered Users</th>
+            </tr>
+
+            {% for trek in treks %}
+
+            <tr>
+
+                <td>T{{ "%03d"|format(trek.id) }}</td>
+                <td>{{ trek.trek_name }}</td>
+                <td>{{ trek.location }}</td>
+                <td>{{ trek.difficulty }}</td>
+                <td>{{ trek.duration }} Days</td>
+                <td>{{ trek.available_slots }}</td>
+                <td>{{ trek.start_date.strftime("%d %b %Y") }}</td>
+                <td>{{ trek.end_date.strftime("%d %b %Y") }}</td>
+
+                <td>
+                    {% if trek.status == "Open" %}
+                        <span class="open">Open</span>
+
+                    {% elif trek.status == "Closed" %}
+                        <span class="closed">Closed</span>
+
+                    {% elif trek.status == "Completed" %}
+                        <span class="completed">Completed</span>
+
+                    {% endif %}
+                </td>
+
+                <td>
+                    {% if trek.assigned_staff %}
+                        {{ trek.assigned_staff.name }}
+
+                    {% else %}
+                        <span class="not-assigned"> NA</span>
+
+                    {% endif %}
+                </td>
+
+                <td>{{ trek.participant_count }}</td>
+
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+    </div>
+
+{% else %}
+
+<div class="empty-card">
+
+    <div class="empty-icon">🏔</div>
+    <h2>No Treks Found</h2>
+    <p>
+        There are currently no treks available in the system.
+        Add a new trek to get started.
+    </p>
+
+</div>
+
+{% endif %}
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

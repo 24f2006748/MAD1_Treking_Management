@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Edit Trek</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+    <div class="logo">🏔️ TrailConnect</div>
+    <div>
+         <a href="{{ url_for('admin_dashboard') }}" class="nav-btn">Admin Dashboard</a> 
+         <a href="{{ url_for('logout') }}" class="nav-btn logout-btn">Logout</a>
+    </div>
+</nav>
+
+<!-- ================== PAGE HEADING ================== -->
+
+<h1 class="page-tile">Modify Trek</h1>
+<p class="page-subtitle">Update the trek information and save your changes.</p>
+
+<!-- ================= FORM ================= -->
+
+<form method="POST" class="form-card">
+
+    <div class="form-grid">
+
+        <div class="form-group">
+            <label>Trek Name</label>
+            <input type="text" name="trek_name" value="{{ trek.trek_name }}" required>
+        </div>
+
+        <div class="form-group">
+            <label>Location</label>
+            <input type="text" name="location" value="{{ trek.location }}" required>
+        </div>
+
+        <div class="form-group">
+            <label>Difficulty</label>
+            <select name="difficulty" required>
+
+                <option value="Easy"
+                {% if trek.difficulty=="Easy" %}selected{% endif %}>
+                Easy
+                </option>
+
+                <option value="Moderate"
+                {% if trek.difficulty=="Moderate" %}selected{% endif %}>
+                Moderate
+                </option>
+
+                <option value="Hard"
+                {% if trek.difficulty=="Hard" %}selected{% endif %}>
+                Hard
+                </option>
+
+            </select>
+
+        </div>
+
+        <div class="form-group">
+            <label>Duration (Days)</label>
+            <input type="number" name="duration" value="{{ trek.duration }}" min="1" required>
+        </div>
+
+        <div class="form-group">
+            <label>Available Slots</label>
+            <input type="number" name="available_slots" value="{{ trek.available_slots }}" min="0" required>
+        </div>
+
+        <div class="form-group">
+
+            <label>Status</label>
+
+            <select name="status" required>
+
+                <option value="Open"
+                {% if trek.status=="Open" %}selected{% endif %}>
+                Open
+                </option>
+
+                <option value="Closed"
+                {% if trek.status=="Closed" %}selected{% endif %}>
+                Closed
+                </option>
+
+                <option value="Completed"
+                {% if trek.status=="Completed" %}selected{% endif %}>
+                Completed
+                </option>
+
+            </select>
+
+        </div>
+
+        <div class="form-group">
+            <label>Start Date</label>
+            <input type="date" id="start_date" name="start_date" value="{{ trek.start_date }}" required>
+        </div>
+
+        <div class="form-group">
+            <label>End Date</label>
+            <input type="date" id="end_date" name="end_date" value="{{ trek.end_date }}" required>
+        </div>
+
+        <div class="form-group full-width">
+            <label>Description</label>
+            <textarea name="description">{{ trek.description }}</textarea>
+        </div>
+
+    </div>
+
+    <div class="form-buttons">
+        <a href="{{ url_for('manage_trek') }}" class="cancel-btn">Cancel</a>
+        <button type="submit" class="save-btn">Update Trek</button>
+    </div>
+
+</form>
+
+<!-- ================= JAVASCRIPT ================= -->
+
+ <script>
+const startDate = document.getElementById("start_date");
+const endDate = document.getElementById("end_date");
+
+function updateEndDate() {
+    endDate.min = startDate.value;
+    if(endDate.value && endDate.value < startDate.value){
+        endDate.value = "";
+    }
+}
+
+startDate.addEventListener("change", updateEndDate);
+updateEndDate();
+
+</script>
+
+
+
+</body>
+</html>

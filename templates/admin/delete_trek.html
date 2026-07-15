@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Delete Trek</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+
+    <style>
+
+        form{
+            width:350px;
+            margin:100px auto;
+            padding:25px;
+            background:white;
+            border-radius:10px;
+            box-shadow:0 0 10px gray;
+            text-align:center;
+        }
+
+        .delete-icon{
+            font-size:45px;
+            margin-bottom:10px;
+        }
+
+        .trek-name{
+            color:red;
+            font-weight:bold;
+        }
+
+        #delete-btn{
+            color:white;
+            padding:8px 18px;
+            background:red;
+            border:2px solid red;
+            border-radius:5px;
+            cursor:pointer;
+        }
+
+        #delete-btn:hover{
+            color:red;
+            background:white;
+        }
+
+        #cancel-btn{
+            color:white;
+            padding:8px 18px;
+            background:#6c757d;
+            border:2px solid #6c757d;
+            border-radius:5px;
+            text-decoration:none;
+            display:inline-block;
+        }
+
+        #cancel-btn:hover{
+            color:#6c757d;
+            background:white;
+        }
+
+        .button-group{
+            display:flex;
+            justify-content:center;
+            gap:15px;
+            margin-top:25px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+    <div class="logo">🏔️ TrailConnect</div>
+    <div>
+         <a href="{{ url_for('admin_dashboard') }}" class="nav-btn">Admin Dashboard</a> 
+         <a href="{{ url_for('logout') }}" class="nav-btn logout-btn">Logout</a>
+    </div>
+</nav>
+
+<!-- ================= PAGE TITLE ================= -->
+
+<h1 class="page-title">Delete Trek</h1>
+<p class="page-subtitle">Permanently remove the selected trek from the system.</p>
+
+<!-- ================= DELETE CARD ================= -->
+
+<form method="POST">
+
+    <div class="delete-icon">🗑️</div>
+
+    <h3>
+        Are you sure you want to delete
+    </h3>
+
+    <h2 class="trek-name">
+        "{{ trek.trek_name }}"
+    </h2>
+
+    <p>
+        This action cannot be undone.
+    </p>
+
+    <div class="button-group">
+
+        <a href="{{ url_for('manage_trek') }}"
+           id="cancel-btn">
+            Cancel
+        </a>
+
+        <button type="submit"
+                id="delete-btn">
+            Delete
+        </button>
+
+    </div>
+
+</form>
+
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>My Bookings</title>
+
+    <link rel="stylesheet"href="{{ url_for('static', filename='navbar.css') }}">
+    <link rel="stylesheet"href="{{ url_for('static', filename='user.css') }}">
+
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+    <div class="logo">🏔️ TrailConnect</div>
+    <div>
+         <a href="{{ url_for('user_dashboard') }}" class="nav-btn">User Dashboard</a> 
+         <a href="{{ url_for('logout') }}" class="nav-btn logout-btn">Logout</a>
+    </div>
+ </nav>
+
+
+<!-- ================= PAGE TITLE ================= -->
+
+<h1 class="page-title">My Bookings</h1>
+
+<p class="page-subtitle">
+    View and manage all your current trek bookings.
+</p>
+
+<!-- if there is no booking by user -->
+
+{% if bookings|length == 0 %}
+
+<div class="empty-card">
+    <h2>No Bookings Yet</h2>
+    <p>You haven't booked any treks yet.</p>
+    <a href="{{ url_for('user_browse_treks') }}">Browse Treks</a>
+</div>
+
+{% else %}
+
+<!-- Booking cards will come here -->
+
+<div class="booking-container">
+ {% for booking in bookings %}
+
+<div class="booking-card">
+
+    <h2>{{ booking.trek.trek_name }}</h2>
+
+    <div class="booking-grid">
+
+        <div class="info-item">
+            <label>Location</label>
+            <p>{{ booking.trek.location }}</p>
+        </div>
+
+        <div class="info-item">
+            <label>Difficulty</label>
+            <p>{{ booking.trek.difficulty }}</p>
+        </div>
+
+        <div class="info-item">
+            <label>Duration</label>
+            <p>{{ booking.trek.duration }} Days</p>
+        </div>
+
+        <div class="info-item">
+            <label>Trek Dates</label>
+            <p>
+                {{ booking.trek.start_date.strftime("%d %b %Y") }}
+                -
+                {{ booking.trek.end_date.strftime("%d %b %Y") }}
+            </p>
+        </div>
+
+        <div class="info-item">
+            <label>Booking Date</label>
+            <p>{{ booking.booking_date.strftime("%d %b %Y") }}</p>
+        </div>
+
+        <div class="info-item">
+
+            <label>Guide</label>
+
+            {% if booking.trek.assigned_staff %}
+                <p>{{ booking.trek.assigned_staff.name }}</p>
+
+            {% else %}
+                <p>Not Assigned Yet</p>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    <div class="status-section">
+        <strong>Trek Status :</strong>
+            {% if booking.trek.status == "Open" %}
+                <span class="status-booked">Upcoming</span>
+
+            {% elif booking.trek.status == "Closed" %}
+                <span class="status-ongoing">Ongoing</span>
+
+            {% endif %}
+    </div>
+
+
+{% if booking.status == "Booked" %}
+
+<div class="can-btn">
+
+    {% if booking.trek.start_date > today %}
+        <a href="{{ url_for('user_cancel_booking', booking_id=booking.id) }}">
+            <button type="button" class="cancel-button">Cancel Booking</button>
+        </a>
+
+    {% else %}
+        <button type="button" class="cancel-disabled-btn" disabled> Cancellation Closed</button>
+
+    {% endif %}
+
+</div>
+
+{% endif %}
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% endif %}
+
+
+</body>
+
+</html>

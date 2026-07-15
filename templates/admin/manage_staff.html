@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Staff Management</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+    <div class="logo">🏔️ TrailConnect</div>
+
+    <div>
+        <a href="{{ url_for('admin_dashboard') }}" class="nav-btn">Admin Dashboard</a>
+        <a href="{{ url_for('logout') }}" class="nav-btn logout-btn">Logout</a>
+    </div>
+</nav>
+
+<!-- ================= PAGE HEADING ================= -->
+
+<h1 class="page-title">Staff Management</h1>
+<p class="page-subtitle">Manage staff registration requests, approvals and blacklist access when required.</p>
+
+<!-- ================= SEARCH & FILTER ================= -->
+
+<form method="GET" class="filter-bar">
+
+<!-- Search -->
+    <input
+        type="text"
+        name="search"
+        placeholder="Search by Staff ID or Name..."
+        value="{{ request.args.get('search','') }}">
+
+<!-- Status -->
+    <select name="status">
+
+        <option value="All">All Staff</option>
+
+        <option value="Pending"
+        {% if request.args.get('status')=="Pending" %}selected{% endif %}>
+            Pending
+        </option>
+
+        <option value="Approved"
+        {% if request.args.get('status')=="Approved" %}selected{% endif %}>
+            Approved
+        </option>
+
+        <option value="Blacklisted"
+        {% if request.args.get('status')=="Blacklisted" %}selected{% endif %}>
+            Blacklisted
+        </option>
+
+    </select>
+
+    <button type="submit" class="search-btn">
+        Search
+    </button>
+
+    <a href="{{ url_for('manage_staff') }}" class="reset-btn">
+        Reset
+    </a>
+
+</form>
+
+<!-- ================= STAFF TABLE ================= -->
+
+{% if staff %}
+
+<div class="table-container">
+
+<table>
+
+    <tr>
+        <th>Staff ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+
+{% for member in staff %}
+
+<tr>
+    <td>S{{ "%03d"|format(member.id) }}</td>
+    <td>{{ member.name }}</td>
+    <td>{{ member.email }}</td>
+
+    <td>
+        {% if member.status=="Pending" %}
+            <span class="pending-badge">Pending</span>
+
+        {% elif member.status=="Approved" %}
+            <span class="approved-badge">Approved</span>
+
+        {% else %}
+            <span class="blacklisted-badge">Blacklisted</span>
+
+        {% endif %}
+    </td>
+
+    <td>
+        {% if member.status=="Pending" %}
+            <form method="POST" action="{{ url_for('approve_staff', staff_id=member.id) }}">
+                <button class="approve-btn" type="submit">Approve</button>
+            </form>
+
+        {% elif member.status=="Approved" %}
+            <form method="POST" action="{{ url_for('blacklist_staff', staff_id=member.id) }}">
+                <button class="blacklist-btn" type="submit"> Blacklist</button>
+            </form>
+
+        {% else %}
+            <span class="blacklisted-action">Blacklisted</span>
+
+        {% endif %}
+    </td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+{% else %}
+    <div class="empty-card">
+        <div class="empty-icon">👨‍💼</div>
+        <h2>No Staff Found</h2>
+        <p>No staff matched your search or filter.</p>
+    </div>
+
+{% endif %}
+
+</body>
+</html>

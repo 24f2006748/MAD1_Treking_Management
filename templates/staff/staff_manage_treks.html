@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"content="width=device-width, initial-scale=1.0">
+
+    <title>Manage Trek</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+    <link rel="stylesheet"href="{{ url_for('static', filename='staff.css') }}">
+</head>
+<body>
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+    <div class="logo">🏔️ TrailConnect</div>
+    <div>
+         <a href="{{ url_for('staff_dashboard') }}" class="nav-btn">Staff Dashboard</a> 
+         <a href="{{ url_for('logout') }}" class="nav-btn logout-btn">Logout</a>
+    </div>
+ </nav>
+
+<!-- ================= PAGE HEADING ================= -->
+ <h1 class="page-title">Manage Trek Details</h1>
+ <p class="page-subtitle">View all the treks assigned to you</p>
+ 
+
+<!-- ================== Trek Card ================== -->
+
+<form method="POST"
+      action="{{ url_for('staff_manage_trek', trek_id=trek.id) }}">
+
+<div class="trek-card">
+
+    <h2>Trek Information</h2>
+
+    <div class="trek-grid">
+
+        <div class="info-item">
+            <label>Trek ID</label>
+            <p>T{{ "%03d"|format(trek.id) }}</p>
+        </div>
+
+        <div class="info-item">
+            <label>Available Slots</label>
+
+            <input
+                type="number"
+                name="available_slots"
+                value="{{ trek.available_slots }}"
+                min="0"
+                required>
+
+        </div>
+
+        <div class="info-item">
+            <label>Trek Name</label>
+            <p>{{ trek.trek_name }}</p>
+        </div>
+
+        <div class="info-item">
+            <label>Duration</label>
+            <p>{{ trek.duration }} Days</p>
+        </div>
+
+        <div class="info-item">
+            <label>Location</label>
+            <p>{{ trek.location }}</p>
+        </div>
+
+        <div class="info-item">
+            <label>Start Date</label>
+            <p>{{ trek.start_date.strftime("%d %b %Y") }}</p>
+        </div>
+
+        <div class="info-item">
+            <label>Difficulty</label>
+            <p>{{ trek.difficulty }}</p>
+        </div>
+
+        <div class="info-item">
+            <label>End Date</label>
+            <p>{{ trek.end_date.strftime("%d %b %Y") }}</p>
+        </div>
+
+        <div class="info-item">
+            <label>Status</label>
+
+            <select name="status">
+
+                <option value="Open"
+                    {% if trek.status=="Open" %}selected{% endif %}>
+                    Open
+                </option>
+
+                <option value="Closed"
+                    {% if trek.status=="Closed" %}selected{% endif %}>
+                    Closed
+                </option>
+
+                <option value="Completed"
+                    {% if trek.status=="Completed" %}selected{% endif %}>
+                    Completed
+                </option>
+
+            </select>
+
+        </div>
+        
+    </div>
+
+    <div class="description">
+        <label>Description</label>
+        <p>{{ trek.description }}</p>
+    </div>
+
+    <div class="save-btn">
+        <button type="submit">Save Changes</button>
+    </div>
+
+</div>
+
+</form>
+
+<!-- ================ Participants Card ================ -->
+
+<div class="participants-card">
+
+    <h2>👥 Registered Participants</h2>
+
+    {% if participants %}
+
+    <table class="participants-table">
+
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Booking Date</th>
+            <th>Status</th>
+        </tr>
+
+        {% for booking in participants %}
+
+        <tr>
+
+            <td>{{ booking.user.name }}</td>
+            <td>{{ booking.user.email }}</td>
+            <td>{{ booking.booking_date.strftime("%d %b %Y") }}</td>
+
+            <td>
+                {% if booking.status == "Booked" %}
+                    <span class="booked-badge">Booked</span>
+                
+                {% elif booking.status == "Completed" %}
+                    <span class="completed-badge">Completed</span>
+                
+                {% else %}
+                    <span class="cancelled-badge">Cancelled</span>
+                
+                {% endif %}
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </table>
+<!-- if there is no aparticipants -->
+    {% else %}
+
+    <div class="empty-participants">
+        <div class="empty-icon">👥</div>
+        <h3>No Participants Yet</h3>
+        <p>No users have booked this trek yet.</p>
+    </div>
+
+{% endif %}
+
+</div>
+
+</body>
+</html>

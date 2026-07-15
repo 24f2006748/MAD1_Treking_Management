@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Details</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='user.css') }}">
+
+</head>
+<body>
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+    <div class="logo">Trek Management System</div>
+    <div>
+         <a href="{{ url_for('user_dashboard') }}" class="nav-btn">User Dashboard</a> 
+         <a href="{{ url_for('logout') }}" class="nav-btn logout-btn">Logout</a>
+    </div>
+ </nav>
+
+ <!-- ================= PAGE TITLE ================= -->
+
+<h1 class="page-title">🏔️ TrailConnect</h1>
+
+<p class="page-subtitle">
+    Review all trek information carefully before confirming your booking.
+</p>
+
+<!-- ================= TREK INFORMATION CARD ================= -->
+
+<div class="trek-card">
+
+<!-- LEFT : IMAGE -->
+    <div class="trek-image">
+        <img
+            src="{{ url_for('static', filename='images/trek_img.webp') }}" alt="Trek Image">
+    </div>
+
+<!-- RIGHT : DETAILS -->
+    <div class="trek-details">
+
+        <h2>Trek : {{ trek.trek_name }}</h2>
+
+        {% if trek.available_slots > 10 %}
+            <div class="slots-green">
+                🟢 {{ trek.available_slots }} Slots Available
+            </div>
+
+        {% elif trek.available_slots > 5 %}
+            <div class="slots-orange">
+                🟠 Only {{ trek.available_slots }} Slots Left
+            </div>
+
+        {% else %}
+            <div class="slots-red">
+                🔴 Hurry! Only {{ trek.available_slots }} Slots Left
+            </div>
+
+        {% endif %}
+
+        <div class="details-grid">
+
+            <div class="detail-item">
+                <label>Trek ID</label>
+                <p>T{{ "%03d"|format(trek.id) }}</p>
+            </div>
+
+            <div class="detail-item">
+                <label>Location</label>
+                <p>{{ trek.location }}</p>
+            </div>
+
+            <div class="detail-item">
+                <label>Difficulty</label>
+                <p>{{ trek.difficulty }}</p>
+            </div>
+
+            <div class="detail-item">
+                <label>Duration</label>
+                <p>{{ trek.duration }} Days</p>
+            </div>
+
+            <div class="detail-item">
+                <label>Start Date</label>
+                <p>{{ trek.start_date.strftime("%d %b %Y") }}</p>
+            </div>
+
+            <div class="detail-item">
+                <label>End Date</label>
+                <p>{{ trek.end_date.strftime("%d %b %Y") }}</p>
+            </div>
+
+        </div>
+
+        <div class="description-box">
+            <h3>Description</h3>
+            <p>{{ trek.description }}</p>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= TREK GUIDELINES ================= -->
+
+<div class="guideline-card">
+
+    <h2>📋 Trek Guidelines</h2>
+
+    <ul>
+        <li>Carry a valid Government ID during the trek.</li>
+        <li>Wear comfortable trekking shoes and suitable clothing.</li>
+        <li>Carry sufficient drinking water and personal medicines.</li>
+        <li>Report at the meeting point at least 30 minutes before departure.</li>
+        <li>Follow all instructions given by the assigned trek guide.</li>
+        <li>Help keep nature clean. Avoid littering throughout the trek.</li>
+    </ul>
+
+</div>
+
+<!-- ================= TERMS & CONDITIONS ================= -->
+
+<form method="POST" action="{{ url_for('user_trek_booking_details', trek_id=trek.id) }}">
+
+<div class="terms-card">
+
+    <h2>📜 Terms & Conditions</h2>
+
+    <ul>
+        <li>Cancellation is allowed only before the trek start date.</li>
+        <li>No refund will be provided after the cancellation deadline.</li>
+        <li>Booking is confirmed only after successful registration.</li>
+        <li>Trek schedules may change due to weather or safety conditions.</li>
+        <li>Carry a valid Government ID during the trek.</li>
+        <li>Follow all instructions provided by the assigned trek guide.</li>
+        <li>The organizer is not responsible for the loss of personal belongings.</li>
+    </ul>
+
+<!-- if user already booked this trek show -->
+
+{% if already_booked %}
+
+    <div class="booking-status-card">
+
+        <h3>Booking Confirmed</h3>
+        <p>You have already booked this trek.</p>
+        <p>Duplicate bookings are not allowed.</p>
+        <a href="{{ url_for('user_my_bookings') }}" class="view-booking-btn">View My Bookings</a>
+    </div>
+
+<!-- if user did not booked this trek show -->
+
+{% else %}
+
+    <div class="agree-box">
+        <input type="checkbox" id="agree" required>
+        <label for="agree">I have read and agree to the Terms & Conditions.</label>
+    </div>
+
+    <div class="booking-buttons">
+        <a href="{{ url_for('user_browse_treks') }}"><button type="button">← Back</button></a>
+        <button type="submit">Book Trek</button>
+    </div>
+
+{% endif %}
+
+</div>
+
+</form>
+
+</body>
+</html>

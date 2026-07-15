@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='staff.css') }}">
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+    <div class="logo">🏔️ TrailConnect</div>
+    <div>
+         <a href="{{ url_for('staff_dashboard') }}" class="nav-btn">Staff Dashboard</a> 
+         <a href="{{ url_for('logout') }}" class="nav-btn logout-btn">Logout</a>
+    </div>
+ </nav>
+
+<!-- ================= PAGE TITLE ================= -->
+
+<h1 class="page-title"> Welcome, {{ staff.name }} </h1>
+
+<!-- ================= TOP SECTION ================= -->
+
+<div class="top-section">
+
+<!-- Profile Card -->
+
+    <div class="profile-card">
+        <h2>👤 Staff Profile</h2>
+        <p> <strong>Name :</strong> {{ staff.name }}</p>
+        <p><strong>Staff ID :</strong> S{{ "%03d"|format(staff.id) }}</p>
+        <p><strong>Email :</strong> {{ staff.email }}</p>
+        <p><strong>Role :</strong> Staff</p>
+    </div>
+
+<!-- Quick Access -->
+
+    <div class="quick-card">
+
+        <h2>🏔 My Treks</h2>
+
+        <p>
+            View all your assigned treks,
+            participants and manage trek status.
+        </p>
+
+        <br>
+
+        <a href="{{ url_for('staff_treks') }}" class="dashboard-btn"> View My Treks</a>
+
+    </div>
+
+</div>
+
+<!-- ================= SUMMARY ================= -->
+
+<h2 class="summary-heading">Dashboard Summary</h2>
+
+<div class="summary-container">
+
+    <div class="summary-card">
+        <h3>Assigned Treks</h3>
+        <h1>{{ total_assigned }}</h1>
+    </div>
+
+    <div class="summary-card">
+        <h3>Participants</h3>
+        <h1>{{ total_participants }}</h1>
+    </div>
+
+    <div class="summary-card">
+        <h3>Open Treks</h3>
+        <h1>{{ open_count }}</h1>
+    </div>
+
+    <div class="summary-card">
+        <h3>Closed Treks</h3>
+        <h1>{{ closed_count }}</h1>
+    </div>
+
+    <div class="summary-card">
+        <h3>Completed Treks</h3>
+        <h1>{{ completed_count }}</h1>
+    </div>
+
+</div>
+
+</body>
+
+</html>

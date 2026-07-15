@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport"content="width=device-width, initial-scale=1.0">
+
+    <title>Profile</title>
+    <link rel="stylesheet"href="{{ url_for('static', filename='navbar.css') }}">
+    <link rel="stylesheet"href="{{ url_for('static', filename='user.css') }}">
+
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+    <div class="logo">🏔️ TrailConnect</div>
+    <div>
+         <a href="{{ url_for('user_dashboard') }}" class="nav-btn">User Dashboard</a> 
+         <a href="{{ url_for('logout') }}" class="nav-btn logout-btn">Logout</a>
+    </div>
+ </nav>
+
+<!-- ================= HEADING ================= -->
+
+<h1 class="page-title">My Profile</h1>
+<p class="page-subtitle">Manage your account information and keep your profile up to date.</p>
+
+<!-- ================= MESSAGE ================= -->
+
+{% if message %}
+<div class="message">{{ message }}</div>
+{% endif %}
+
+<!-- ================= PROFILE CARD ================= -->
+
+<div class="profile-card">
+
+<form method="POST">
+
+    <div class="profile-grid">
+
+    <div class="form-group">
+        <label>User ID</label>
+        <input type="text" value="U{{ '%03d'|format(user.id) }}" readonly>
+    </div>
+
+    <div class="form-group">
+        <label>Role</label>
+        <input type="text" value="User" readonly>
+    </div>
+
+    <div class="form-group">
+        <label>Name</label>
+        <input type="text" name="name" value="{{ user.name }}" required>
+    </div>
+
+    <div class="form-group">
+        <label>Email</label>
+        <input type="email" name="email" value="{{ user.email }}" required>
+    </div>
+
+    <div class="form-group">
+        <label>New Password</label>
+        <input type="password" name="password" placeholder="Leave blank if no change">
+    </div>
+
+    <div class="form-group">
+        <label>Confirm Password</label>
+        <input type="password" name="confirm_password">
+    </div>
+
+    </div>
+
+    <div class="button-group">
+
+        <a href="{{ url_for('user_dashboard') }}">
+            <button type="button" class="cancel-btn">Cancel</button>
+        </a>
+
+        <button type="submit" class="update-btn">Update Profile</button>
+
+    </div>
+
+</form>
+
+</div>
+
+</body>
+
+</html>

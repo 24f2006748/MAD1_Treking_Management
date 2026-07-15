@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard</title>
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin_dashboard.css') }}">
+
+</head>
+<body>
+
+<!-- ================= NAVBAR ================= -->
+ 
+<nav class="navbar">
+    <div class="logo">🏔️ TrailConnect</div>
+    <div>
+         <a href="{{ url_for('admin_dashboard') }}" class="nav-btn">Admin Dashboard</a> 
+         <a href="{{ url_for('logout') }}" class="nav-btn logout-btn">Logout</a>
+    </div>
+</nav>
+
+ <!-- ================= PAGE HEADING ================= -->
+
+<h1 class="page-title">Welcome Back, Admin </h1>
+<p class="page-subtitle">Manage treks, staff, users and bookings from one place.</p>
+
+
+<!-- ================= SUMMARY CARDS ================= -->
+
+<div class="summary-cards">
+
+    <div class="summary-card">
+        <div class="summary-icon">🏔</div>
+        <h2>{{ total_treks }}</h2>
+        <p>Total Treks</p>
+    </div>
+
+    <div class="summary-card">
+        <div class="summary-icon">👥</div>
+        <h2>{{ total_users }}</h2>
+        <p>Total Users</p>
+    </div>
+
+    <div class="summary-card">
+        <div class="summary-icon">👨‍💼</div>
+        <h2>{{ total_staff }}</h2>
+        <p>Total Staff</p>
+    </div>
+
+    <div class="summary-card">
+        <div class="summary-icon">📅</div>
+        <h2>{{ total_bookings }}</h2>
+        <p>Total Bookings</p>
+    </div>
+
+</div>
+
+
+<!-- ================= ADMINISTRATION MODULES ================= -->
+
+<h2 class="section-heading">
+    Administration Modules
+</h2>
+
+<div class="quick-actions">
+
+<!-- Trek Overview -->
+
+    <div class="action-card">
+
+        <div class="action-icon">🏔</div>
+
+        <h3>Trek Overview</h3>
+
+        <p>
+            View every trek, assigned staff,
+            participants and current status.
+        </p>
+
+        <a href="{{ url_for('trek') }}" class="action-btn">View</a>
+
+    </div>
+
+
+<!-- Manage Treks -->
+
+    <div class="action-card">
+
+        <div class="action-icon">⚙️</div>
+
+        <h3>Manage Treks</h3>
+
+        <p>
+            Add, edit, delete treks and
+            assign staff members.
+        </p>
+
+        <a href="{{ url_for('manage_trek') }}" class="action-btn">Manage</a>
+
+    </div>
+
+
+<!-- Manage Staff -->
+
+    <div class="action-card">
+
+        <div class="action-icon">👨‍💼</div>
+
+        <h3>Manage Staff</h3>
+
+        <p>
+            Approve new staff registrations
+            and blacklist staff members.
+        </p>
+
+        <a href="{{ url_for('manage_staff') }}" class="action-btn">Manage</a>
+
+    </div>
+
+
+<!-- Manage Users -->
+
+    <div class="action-card">
+
+        <div class="action-icon">👥</div>
+
+        <h3>Manage Users</h3>
+
+        <p>
+            View registered users and
+            blacklist user accounts.
+        </p>
+
+        <a href="{{ url_for('manage_users') }}" class="action-btn">Manage</a>
+
+    </div>
+
+
+<!-- All Bookings -->
+
+    <div class="action-card">
+
+        <div class="action-icon">📅</div>
+
+        <h3>All Bookings</h3>
+
+        <p>
+            View every booking made
+            throughout the system.
+        </p>
+
+        <a href="{{ url_for('view_bookings') }}" class="action-btn">View</a>
+
+    </div>
+
+
+<!-- Reports -->
+
+    <div class="action-card">
+
+        <div class="action-icon">📊</div>
+
+        <h3>Reports</h3>
+
+        <p>
+            View booking trends,
+            trek statistics and reports.
+        </p>
+
+        <a href="{{ url_for('report')}}" class="action-btn">View</a>
+
+    </div>
+
+</div>
+
+</body>
+</html>

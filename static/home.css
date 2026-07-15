@@ -1,0 +1,67 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+ }
+
+body {
+    height: 100vh;
+    /* background-image: url(static/images/trek_image.png); */
+    background-image: linear-gradient(
+        rgba(0,0,0,0.45),
+        rgba(33, 33, 33, 0.45)
+    ),
+    url("images/trek_image.png");
+
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.832);
+    padding: 30px;  
+}
+
+h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+}
+
+p {
+    font-size: 20px;
+    margin-bottom: 35px;
+}
+
+
+.btn {
+    display: inline-block;
+    text-decoration: none;
+    color: white;
+    padding: 14px 35px;
+    margin: 10px;
+    border-radius: 30px;
+    font-size: 18px;
+    transition: 0.3s;
+}
+
+.register {
+    background-color: #2d8c56;
+}
+
+.login {
+    background-color: #017fc3;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+}
+
+ 
